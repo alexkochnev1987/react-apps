@@ -1,0 +1,17 @@
+query GetAllExercises {
+  exercises {
+    id
+    name
+    tag
+    age
+    description
+    points
+    img
+    coachId {
+      id
+      name
+      age
+      team
+    }
+  }
+}

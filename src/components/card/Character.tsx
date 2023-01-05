@@ -7,7 +7,22 @@ import AccessTimeSharpIcon from '@mui/icons-material/AccessTimeSharp';
 import { pink } from '@mui/material/colors';
 import Rating from '@mui/material/Rating';
 import { createTheme, ThemeProvider } from '@mui/material';
-import { User } from 'components/registration/Form';
+import DialogChar from './Dialog';
+
+export interface Results {
+  created: string;
+  episode: string[];
+  gender: string;
+  id: number;
+  image: string;
+  location: { name: string; url: string };
+  name: string;
+  origin: { name: string; url: string };
+  species: string;
+  status: string;
+  type: string;
+  url: string;
+}
 
 const theme = createTheme({
   components: {
@@ -26,16 +41,28 @@ const theme = createTheme({
   },
 });
 
-const Card = (props: { user: User }) => {
+const Character = (props: { user: Results }) => {
   const user = props.user;
   const [value, setValue] = useState<number | null>(2.5);
+
+  const [open, setOpen] = useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = (value: string) => {
+    setOpen(false);
+    console.log(value);
+  };
   return (
     <Paper elevation={3}>
-      <img src={user.file} alt={user.lastName} className="img" />
+      <DialogChar open={open} data={user} onClose={handleClose} />
+      <img src={user.image} alt={user.name} className="img" />
       <ThemeProvider theme={theme}>
         <Box sx={{ p: 1 }}>
           <Typography variant="h5" gutterBottom>
-            {user.firstName} {user.lastName}
+            {user.name}
           </Typography>
           <Box display={'flex'} alignItems={'center'}>
             <AccessTimeSharpIcon sx={{ color: pink[500], fontSize: 24 }} />
@@ -55,17 +82,20 @@ const Card = (props: { user: User }) => {
             <Typography paddingLeft={1} variant="body1">
               {value}
             </Typography>
+
             <Typography paddingLeft={1} variant="body2">
-              (456 views)
+              {user.species}
             </Typography>
           </Box>
-          <Box sx={{ display: 'flex', justifyContent: 'center', padding: '10px' }}>
-            <Typography variant="h6">From 156 $</Typography>
-          </Box>
+          <div onClick={handleClickOpen}>
+            <Box sx={{ display: 'flex', justifyContent: 'center', padding: '10px' }}>
+              <Typography variant="h6">{user.status}</Typography>
+            </Box>
+          </div>
         </Box>
       </ThemeProvider>
     </Paper>
   );
 };
 
-export default Card;
+export default Character;

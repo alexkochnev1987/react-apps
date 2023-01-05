@@ -1,6 +1,7 @@
 import { alpha, InputBase, styled } from '@mui/material';
 import React from 'react';
 import SearchIcon from '@mui/icons-material/Search';
+import { useGlobalContext } from 'components/Context/SearchContext';
 
 const SearchDiv = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -45,13 +46,18 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 const SearchBar = () => {
+  const { setSearch } = useGlobalContext();
   return (
     <>
       <SearchDiv>
         <SearchIconWrapper>
           <SearchIcon />
         </SearchIconWrapper>
-        <StyledInputBase placeholder="Search…" inputProps={{ 'aria-label': 'search' }} />
+        <StyledInputBase
+          placeholder="Search…"
+          inputProps={{ 'aria-label': 'search' }}
+          onChange={(e) => setSearch(e.target.value)}
+        />
       </SearchDiv>
     </>
   );
